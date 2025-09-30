@@ -1,11 +1,11 @@
 [app]
 title = AzkarApp
 package.name = azkarapp
-package.domain = org.kyanislam
+package.domain = org.test
 source.dir = .
-source.include_exts = py,ttf
+source.include_exts = py
 version = 1.0
-requirements=python3,kivy==2.3.0,arabic_reshaper,python-bidi
+requirements = python3,kivy==2.3.0
 orientation = portrait
 fullscreen = 0
 
