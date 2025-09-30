@@ -21,7 +21,7 @@ class Name(App):
         
         self.b1 = Button(
             text=tex3,
-            font_name="arial-1.ttf",
+            font_name="arial-1.ttf",  # خلي الملف اسمه arial.ttf
             size_hint=(None, None),
             size=(200, 70),
             on_press=self.ching,
@@ -29,7 +29,6 @@ class Name(App):
             font_size=40,
             halign="center",
             valign="center"
-            
         )
         
         self.List_of_dhikr = [
@@ -45,13 +44,11 @@ class Name(App):
         
         self.L1 = Label(
             text=tex2,
-            font_name="arial-1.ttf",
+            font_name="arial-1.ttf",  # نفس الخط
             font_size=42,
             pos_hint={'x':0.5, 'y': 0.05},
             halign="center",
             valign="center"
-            
-            
         )
         self.L1.bind(size=self.L1.setter('text_size'))
         
@@ -73,5 +70,5 @@ class Name(App):
         self.L1.text = tex2
 
 
-if __name__ == "__main__":
-    Name().run()
+
+Name().run()
