@@ -1,6 +1,6 @@
 [app]
 title = AzkarApp
-package.name = mykivyapp
+package.name = azkarapp
 package.domain = org.test
 source.dir = .
 source.include_exts = py
