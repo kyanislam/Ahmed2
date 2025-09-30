@@ -11,7 +11,7 @@ from kivy.utils import get_color_from_hex
 
 Window.clearcolor = (1, 0, 0, 1)
 
-class Name(App):
+class main(App):
     def build(self):
         self.h = 0  # تعريف h كمتغير خاص بالكائن
         
@@ -74,4 +74,4 @@ class Name(App):
 
 
 if __name__ == "__main__":
-    Name().run()
+    main().run()
