@@ -1,6 +1,3 @@
-import arabic_reshaper
-from bidi.algorithm import get_display
-
 from random import choice
 from kivy.app import App
 from kivy.uix.button import Button, Label
@@ -11,47 +8,31 @@ from kivy.utils import get_color_from_hex
 
 Window.clearcolor = (1, 0, 0, 1)
 
-class main(App):
+class Name(App):
     def build(self):
-        self.h = 0  # تعريف h كمتغير خاص بالكائن
+        self.h = 0
         
         layout = BoxLayout(orientation="horizontal")
-        tex2 = arabic_reshaper.reshape("التالي")
-        tex3 = get_display(tex2)
         
         self.b1 = Button(
-            text=tex3,
-            font_name="arial-1.ttf",
+            text="التالي",
             size_hint=(None, None),
             size=(200, 70),
             on_press=self.ching,
-            pos_hint={'x': 0.4, 'y': 0.01},
-            font_size=40,
-            halign="center",
-            valign="center"
-            
+            font_size=40
         )
         
         self.List_of_dhikr = [
-            "             سبحان الله",
-            "              الحمد لله",
-            "                لا إله إلا الله",
-            "               الله أكبر",
-            "                 لا حول ولا قوة إلا بالله"
+            "سبحان الله",
+            "الحمد لله",
+            "لا إله إلا الله",
+            "الله أكبر",
+            "لا حول ولا قوة إلا بالله"
         ]
         
-        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
-        tex2 = get_display(tex)
-        
         self.L1 = Label(
-            text=tex2,
-            font_name="arial-1.ttf",
-            font_size=42,
-            pos_hint={'x':0.5, 'y': 0.05},
-            halign="center",
-            valign="center"
-            
-            
+            text=self.List_of_dhikr[self.h],
+            font_size=42
         )
         self.L1.bind(size=self.L1.setter('text_size'))
         
@@ -67,11 +48,10 @@ class main(App):
         Window.clearcolor = get_color_from_hex(ching_color)
         
         # تحديث النص
-        self.h = (self.h + 1) % len(self.List_of_dhikr)  # التنقل بين الأذكار
-        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
-        tex2 = get_display(tex)
-        self.L1.text = tex2
+        self.h = (self.h + 1) % len(self.List_of_dhikr)
+        self.L1.text = self.List_of_dhikr[self.h]
 
 
 if __name__ == "__main__":
-    main().run()
+    print("🚀 التطبيق بدأ يشتغل")
+    Name().run()
