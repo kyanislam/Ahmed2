@@ -1,7 +1,7 @@
 [app]
 title = AzkarApp
 package.name = azkarapp
-package.domain = org.test
+package.domain = org.kyanislam
 source.dir = .
 source.include_exts = py
 version = 1.0
