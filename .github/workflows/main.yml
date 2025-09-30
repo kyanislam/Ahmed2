@@ -25,4 +25,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MyKivyApp
-          path: .buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/MyKivyApp/bin/*.apk
+          path: bin/*.apk
+
