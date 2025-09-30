@@ -5,7 +5,7 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py
 version = 1.0
-requirements = python3, kivy==2.3.0,arabic_reshaper,bidi.algorithm
+requirements=python3,kivy==2.3.0,arabic_reshaper,python-bidi
 orientation = portrait
 fullscreen = 0
 
