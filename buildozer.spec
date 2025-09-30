@@ -1,11 +1,11 @@
 [app]
-title = MyKivyApp
+title = AzkarApp
 package.name = mykivyapp
 package.domain = org.test
 source.dir = .
-source.include_exts = py, kv
+source.include_exts = py
 version = 1.0
-requirements = python3, kivy==2.3.0, kivymd==1.2.0
+requirements = python3, kivy==2.3.0,arabic_reshaper,bidi.algorithm
 orientation = portrait
 fullscreen = 0
 
