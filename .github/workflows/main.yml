@@ -24,6 +24,6 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MyKivyApp
+          name: AzkarApp
           path: bin/*.apk
 
