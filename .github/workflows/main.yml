@@ -13,6 +13,9 @@ jobs:
       - name: Fix git config issue
         run: git config --unset http.https://github.com/.extraheader || true
 
+      - name: Clean build
+        run: rm -rf .buildozer bin
+
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         env:
@@ -26,4 +29,3 @@ jobs:
         with:
           name: AzkarApp
           path: bin/*.apk
-
