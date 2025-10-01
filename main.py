@@ -1,3 +1,6 @@
+import arabic_reshaper
+from bidi.algorithm import get_display
+
 from random import choice
 from kivy.app import App
 from kivy.uix.button import Button, Label
@@ -13,46 +16,53 @@ class Name(App):
         self.h = 0  # تعريف h كمتغير خاص بالكائن
         
         layout = BoxLayout(orientation="horizontal")
-        tex3 ="التالي"
-        
+        tex2 = arabic_reshaper.reshape("التالي")
+        tex3 = get_display(tex2)
         
         self.b1 = Button(
             text=tex3,
-             # خلي الملف اسمه arial.ttf
+            font_name="arial-1.ttf",
             size_hint=(None, None),
             size=(200, 70),
             on_press=self.ching,
             pos_hint={'x': 0.4, 'y': 0.01},
             font_size=40,
-            font_name="arial-1.ttf",
             halign="center",
             valign="center"
+            
         )
         
         self.List_of_dhikr = [
-            "             سبحان الله",
-            "              الحمد لله",
+            "  سبحان الله",
+            "   الحمد لله",
             "                لا إله إلا الله",
-            "               الله أكبر",
+            "     الله أكبر",
             "                 لا حول ولا قوة إلا بالله"
         ]
         
-        tex2=self.List_of_dhikr[self.h]
-        
+        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
+        tex2 = get_display(tex)
         
         self.L1 = Label(
             text=tex2,
-              # نفس الخط
-            font_size=42,
             font_name="arial-1.ttf",
+            font_size=42,
             pos_hint={'x':0.5, 'y': 0.05},
             halign="center",
             valign="center"
+            
+            
         )
         self.L1.bind(size=self.L1.setter('text_size'))
+        tex_b=arabic_reshaper.reshape("خروج")
+        tex_bb=get_display(tex_b)
+        
+        but=Button(text=tex_bb,size_hint=(None,None),size=(200,70),pos_hint={"x":0.6,"y":0.01},font_name="arial-1.ttf",font_size=40,on_press=exit)
+        
         
         layout.add_widget(self.b1)
         layout.add_widget(self.L1)
+        layout.add_widget(but)
         
         return layout
 
@@ -64,10 +74,9 @@ class Name(App):
         
         # تحديث النص
         self.h = (self.h + 1) % len(self.List_of_dhikr)  # التنقل بين الأذكار
-        tex = self.List_of_dhikr[self.h]
-        
-        self.L1.text = tex
-
+        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
+        tex2 = get_display(tex)
+        self.L1.text = tex2
 
 
 Name().run()
