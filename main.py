@@ -1,82 +1,57 @@
-import arabic_reshaper
-from bidi.algorithm import get_display
-
-from random import choice
 from kivy.app import App
-from kivy.uix.button import Button, Label
-from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
+from kivy_garden.arabictext import ArabicLabel
+from kivy.uix.button import Button
+from random import choice
+from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 
 
-Window.clearcolor = (1, 0, 0, 1)
-
-class Name(App):
+class AzkarApp(App):
     def build(self):
-        self.h = 0  # تعريف h كمتغير خاص بالكائن
-        
-        layout = BoxLayout(orientation="horizontal")
-        tex2 = arabic_reshaper.reshape("التالي")
-        tex3 = get_display(tex2)
-        
-        self.b1 = Button(
-            text=tex3,
-            font_name="arial-1.ttf",
-            size_hint=(None, None),
-            size=(200, 70),
-            on_press=self.ching,
-            pos_hint={'x': 0.4, 'y': 0.01},
-            font_size=40,
-            halign="center",
-            valign="center"
-            
-        )
-        
-        self.List_of_dhikr = [
-            "  سبحان الله",
-            "   الحمد لله",
-            "                لا إله إلا الله",
-            "     الله أكبر",
-            "                 لا حول ولا قوة إلا بالله"
+        self.h = 0
+        self.azkar = [
+            "سبحان الله",
+            "الحمد لله",
+            "لا إله إلا الله",
+            "الله أكبر",
+            "لا حول ولا قوة إلا بالله"
         ]
-        
-        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
-        tex2 = get_display(tex)
-        
-        self.L1 = Label(
-            text=tex2,
+
+        layout = BoxLayout(orientation="vertical", padding=20, spacing=20)
+
+        self.label = ArabicLabel(
+            text=self.azkar[self.h],
             font_name="arial-1.ttf",
-            font_size=42,
-            pos_hint={'x':0.5, 'y': 0.05},
+            font_size=48,
             halign="center",
-            valign="center"
-            
-            
+            valign="middle"
         )
-        self.L1.bind(size=self.L1.setter('text_size'))
-        tex_b=arabic_reshaper.reshape("خروج")
-        tex_bb=get_display(tex_b)
-        
-        but=Button(text=tex_bb,size_hint=(None,None),size=(200,70),pos_hint={"x":0.6,"y":0.01},font_name="arial-1.ttf",font_size=40,on_press=exit)
-        
-        
-        layout.add_widget(self.b1)
-        layout.add_widget(self.L1)
-        layout.add_widget(but)
-        
+
+        btn = Button(
+            text="التالي",
+            font_name="arial-1.ttf",
+            font_size=32,
+            size_hint=(None, None),
+            size=(200, 80),
+            pos_hint={"center_x": .5}
+        )
+        btn.bind(on_press=self.next_zekr)
+
+        layout.add_widget(self.label)
+        layout.add_widget(btn)
+
         return layout
 
-    def ching(self, yes):
-        # تغيير الخلفية
-        list_color = ["#eb0e0e","#ff6803","#c4ff03","#0b03ff","#d30fff","#b5b5b5","#66ff8cff","#ffdf7fff"]
-        ching_color = choice(list_color)
-        Window.clearcolor = get_color_from_hex(ching_color)
-        
+    def next_zekr(self, instance):
+        # تغيير اللون العشوائي للخلفية
+        colors = ["#eb0e0e","#ff6803","#c4ff03","#0b03ff","#d30fff","#b5b5b5","#66ff8c","#ffdf7f"]
+        Window.clearcolor = get_color_from_hex(choice(colors))
+
         # تحديث النص
-        self.h = (self.h + 1) % len(self.List_of_dhikr)  # التنقل بين الأذكار
-        tex = arabic_reshaper.reshape(self.List_of_dhikr[self.h])
-        tex2 = get_display(tex)
-        self.L1.text = tex2
+        self.h = (self.h + 1) % len(self.azkar)
+        self.label.text = self.azkar[self.h]
 
 
-Name().run()
+if __name__ == "__main__":
+    AzkarApp().run()
