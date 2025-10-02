@@ -13,8 +13,12 @@ jobs:
       - name: Fix git config issue
         run: git config --unset http.https://github.com/.extraheader || true
 
-      - name: Clean build
-        run: rm -rf .buildozer bin
+      # الخطوة الجديدة المطلوبة
+      - name: Install Kivy Garden ArabicText
+        run: |
+          pip install kivy-garden
+          chmod +x /home/runner/.local/bin/garden
+          garden install arabictext
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
