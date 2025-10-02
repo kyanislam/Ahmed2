@@ -1,19 +1,13 @@
 [app]
-title = AzkarApp
+title = Azkar
 package.name = azkarapp
 package.domain = org.test
 source.dir = .
 source.include_exts = py, ttf
 version = 1.0
-
-# المكتبات اللي محتاجها البرنامج
-requirements = python3, kivy==2.3.0, pillow, setuptools, six, arabic_reshaper, python-bidi
-
+requirements = python3,kivy==2.3.0,kivy_garden.arabictext
 orientation = portrait
 fullscreen = 0
-
-# حط أي صلاحيات هنا
-android.permissions = INTERNET
 
 [buildozer]
 log_level = 2
