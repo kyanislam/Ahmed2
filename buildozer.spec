@@ -1,34 +1,17 @@
 [app]
-title = AzkarApp
-package.name = azkarapp
-package.domain = org.kyanislam
+title = Colors Game
+package.name = colorsgame
+package.domain = org.test
 source.dir = .
-source.include_exts = py,tff
+source.include_exts = py, mp3, png, jpg,
 version = 1.0
-requirements = python3,kivy,kivy-garden,garden.arabictext
+requirements = python3, kivy==2.3.0, pillow
 orientation = portrait
-fullscreen = 1
-android.permissions = INTERNET
 
-# (اختياري) إضافة أي ملفات إضافية في مجلدات معينة:
-# source.include_dirs = assets,images
+# 👇 هذا السطر يلغي واجهة Kivy الافتراضية ويستبدلها بملفك
+presplash.filename = presplash.png
+# أو يمكنك جعلها فقط لون بدون صورة 👇
+presplash_color = #FFFFFF
 
-[buildozer]
-log_level = 2
-warn_on_root = 1
-
-[android]
-# لتسريع البناء واختيار بنية محددة (arm64 فقط مثلاً)
-# android.arch = arm64-v8a
-
-# لتحديد الحد الأدنى لإصدار الأندرويد
-# android.minapi = 21
-
-# (اختياري) لتضمين أي مكتبات إضافية
-# android.add_jars = libs/myjar.jar
-
-# إذا كنت تستخدم garden widgets أو إضافات أخرى
-# requirements = python3,kivy,kivy-garden,garden.arabictext
-
-# إذا كان لديك ملفات kv أو صور في مجلدات معينة
-# source.include_exts = py,png,jpg,kv,atlas
+# 👇 هذا السطر يحدد الأيقونة
+icon.filename = icon.png
