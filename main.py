@@ -344,7 +344,7 @@ class kyan(App):
         
         self.lab2=Label(text="Colors game",font_size=60,pos=(300,1050))
         
-        self.img=Image(source="images (5).jpeg",pos=(180,600),size=(400,400))
+        self.img=Image(source="images (5).png",pos=(180,600),size=(400,400))
         
         list_widget=[self.but,self.but2,self.lab,self.lab2,self.img]
         
