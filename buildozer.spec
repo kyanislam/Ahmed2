@@ -14,7 +14,7 @@ orientation = portrait
 fullscreen = 0
 
 # شاشة البدء (Splash Screen)
-presplash.filename = presplash.png
+presplash.filename = 
 presplash.keep = True
 
 # أيقونة التطبيق
