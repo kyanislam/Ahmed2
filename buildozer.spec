@@ -14,7 +14,8 @@ orientation = portrait
 fullscreen = 0
 
 # شاشة البدء (Splash Screen)
-android.presplash_color = #ADD8E6
+android.presplash = presplash.png
+android.presplash_color = #FFFFFF
 
 
 # أيقونة التطبيق
