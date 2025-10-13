@@ -1,40 +1,50 @@
 [app]
+# اسم التطبيق الذي سيظهر للمستخدم
 title = Voice Recorder
+# اسم حزمة التطبيق (يجب أن يكون فريدًا)
 package.name = voicerecorder
-package.domain = org.test
+package.domain = org.kivy
+# مجلد الكود الرئيسي
 source.dir = .
-source.include_exts = py, kv, wav
+# تضمين الملفات المطلوبة
+source.include_exts = py, wav, png, jpg, kv
+# نسخة التطبيق
 version = 1.0
 
-# 📦 المتطلبات الأساسية
+# التطبيق الرئيسي
+entrypoint = main.py
+
+# المكتبات المطلوبة
 requirements = python3,kivy,plyer
 
-# 🎙️ صلاحيات أندرويد المطلوبة
+# الأذونات المطلوبة
 android.permissions = RECORD_AUDIO, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
 
-# مسار الأيقونة وشاشة البداية (اختياري)
-icon.filename = %(source.dir)s/icon.png
-presplash.filename = %(source.dir)s/presplash.png
+# أيقونة التطبيق (اختياري)
+icon.filename = icon.png
 
-# توجيه الشاشة (عمودية)
+# دعم التخزين الخارجي (مطلوب لحفظ الصوت في /sdcard)
+android.allow_backup = True
+android.api = 33
+android.minapi = 21
+android.ndk = 25b
+android.sdk = 33
+android.ndk_api = 21
+android.archs = arm64-v8a, armeabi-v7a
+
+# لغة الواجهة (UTF-8)
+android.add_default_permissions = 1
+
+# اسم الملف النهائي
+package.version = 1.0
+package.format = apk
+
+# استخدام واجهة SDL2 الافتراضية
 orientation = portrait
 
-# يدعم اللغة العربية والإنجليزية
-android.allow_backup = True
+# تعطيل دعم أكواد الصوت القديمة
+android.accept_sdk_license = True
+android.debug = False
 
-# لمنع ظهور لوحة المفاتيح مع التشغيل
-fullscreen = 0
-
-# 🔊 لتحسين دعم الصوت (اختياري)
-android.minapi = 21
-android.sdk = 33
-android.ndk = 25b
-android.api = 33
-
-# تقليل حجم التطبيق
-log_level = 2
-# إزالة المكتبات غير الضرورية
-android.strip = True
-
-# اسم حزمة Android النهائي
-package.version_code = 1
+# اسم الحزمة النهائي للتطبيق
+# سيصبح مثلاً org.kivy.voicerecorder
