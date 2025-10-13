@@ -24,12 +24,12 @@ BoxLayout:
         value: 0
         size_hint_y: None
         height: 20
-        opacity: 0  # مخفي افتراضيًا
+        opacity: 0
 
     Button:
         text: "🎙️ Start Recording"
         font_size: '20sp'
-        on_press: app.start_recording()
+        on_press: app.request_permission_and_record()
 
     Button:
         text: "⏹️ Stop Recording"
@@ -45,10 +45,12 @@ BoxLayout:
 class AndroidRecorderApp(App):
     def build(self):
         self.sound = None
+        self.recorder = None
         self.progress_event = None
         return Builder.load_string(KV)
 
-    def start_recording(self):
+    def request_permission_and_record(self):
+        """طلب إذن أولاً ثم البدء بعد ثانيتين لتفادي الكراش"""
         if platform == 'android':
             from android.permissions import request_permissions, Permission
             request_permissions([
@@ -56,7 +58,13 @@ class AndroidRecorderApp(App):
                 Permission.WRITE_EXTERNAL_STORAGE,
                 Permission.READ_EXTERNAL_STORAGE
             ])
+            self.root.ids.status.text = "⏳ Waiting for permission..."
+            Clock.schedule_once(lambda dt: self.start_recording(), 2)
+        else:
+            self.root.ids.status.text = "⚠️ Works only on Android"
 
+    def start_recording(self):
+        try:
             MediaRecorder = autoclass('android.media.MediaRecorder')
             AudioSource = autoclass('android.media.MediaRecorder$AudioSource')
             OutputFormat = autoclass('android.media.MediaRecorder$OutputFormat')
@@ -72,32 +80,33 @@ class AndroidRecorderApp(App):
             self.recorder.start()
 
             self.root.ids.status.text = "🎤 Recording..."
-        else:
-            self.root.ids.status.text = "⚠️ Recording works only on Android"
+        except Exception as e:
+            self.root.ids.status.text = f"⚠️ Error starting: {e}"
 
     def stop_recording(self):
         try:
-            self.recorder.stop()
-            self.recorder.release()
-            self.root.ids.status.text = f"✅ Saved: {self.output_file}"
+            if self.recorder:
+                self.recorder.stop()
+                self.recorder.release()
+                self.root.ids.status.text = f"✅ Saved: {self.output_file}"
+            else:
+                self.root.ids.status.text = "⚠️ No active recorder."
         except Exception as e:
-            self.root.ids.status.text = f"Error stopping: {e}"
+            self.root.ids.status.text = f"⚠️ Error stopping: {e}"
 
     def play_recording(self):
         try:
             sound = SoundLoader.load(self.output_file)
             if sound:
-                self.sound = sound
                 sound.play()
                 self.root.ids.status.text = "🎧 Playing recording..."
                 self.start_progress_bar(sound.length)
             else:
                 self.root.ids.status.text = "⚠️ No recording found."
         except Exception as e:
-            self.root.ids.status.text = f"Error playing: {e}"
+            self.root.ids.status.text = f"⚠️ Error playing: {e}"
 
     def start_progress_bar(self, duration):
-        """تشغيل شريط التقدم أثناء التشغيل"""
         bar = self.root.ids.progress
         bar.opacity = 1
         bar.value = 0
@@ -112,7 +121,6 @@ class AndroidRecorderApp(App):
         bar = self.root.ids.progress
         self.progress_time += dt
         bar.value = (self.progress_time / duration) * 100
-
         if self.progress_time >= duration:
             bar.opacity = 0
             bar.value = 0
