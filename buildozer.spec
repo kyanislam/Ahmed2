@@ -21,7 +21,7 @@ icon.filename = icon.png
 
 # صورة شاشة البداية / presplash (ضع presplash.png في جذر المشروع)
 presplash.filename = presplash.png
-
+presplash_scale = fit
 # توجيه الشاشة
 orientation = portrait
 
