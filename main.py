@@ -1,132 +1,174 @@
 from kivy.app import App
+import webbrowser
+
+
+from kivy.core.window import Window
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.scatter import Scatter
+from kivy.uix.pagelayout import PageLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.lang import Builder
-from kivy.utils import platform
+from kivy.base import runTouchApp
+from kivy.uix.screenmanager import ScreenManager,Screen
+from kivy.uix.accordion import Accordion
+from kivy.uix.image import Image,AsyncImage
 from kivy.core.audio import SoundLoader
-from jnius import autoclass
+from kivy.uix.video import Video
+from kivy.storage.jsonstore import JsonStore
+from kivy.properties import ObjectProperty
+from kivy.uix.carousel import Carousel
+from kivy.uix.popup import Popup
+
+from kivy.uix.spinner import Spinner
+from kivy.uix.modalview import ModalView
+from kivy.uix.togglebutton import ToggleButton
+import random
+import string
+import os
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.colorpicker import ColorPicker
+from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.graphics import *
+from kivy.animation import Animation
+from kivy.uix.widget import Widget
 from kivy.clock import Clock
+Window.clearcolor=(1,1,1,1)
+class Myar(App):
 
-KV = '''
-BoxLayout:
-    orientation: 'vertical'
-    padding: 20
-    spacing: 10
-
-    Label:
-        id: status
-        text: "Press Start to record"
-        font_size: '18sp'
-        size_hint_y: None
-        height: self.texture_size[1] + 20
-
-    ProgressBar:
-        id: progress
-        max: 100
-        value: 0
-        size_hint_y: None
-        height: 20
-        opacity: 0
-
-    Button:
-        text: "🎙️ Start Recording"
-        font_size: '20sp'
-        on_press: app.request_permission_and_record()
-
-    Button:
-        text: "⏹️ Stop Recording"
-        font_size: '20sp'
-        on_press: app.stop_recording()
-
-    Button:
-        text: "▶️ Play Recording"
-        font_size: '20sp'
-        on_press: app.play_recording()
-'''
-
-class AndroidRecorderApp(App):
+    
+    
+      
+        
+        
+    def stopp(self,instance):
+       
+       
+       self.popup.dismiss()
+       
+       
+    
+    def next(self,instance):
+        
+        if self.n != 0 :
+            self.mysound.stop()
+            
+          
+        self.n+=1
+        self.u+=1
+        
+        
+             
+             
+        if self.n <=27:
+            self.lab.text=self.Letter_list[self.n]
+        elif self.n>27:
+            self.n=0
+            self.u=0
+            self.lab.text=self.Letter_list[self.n]
+            
+        if self.n==self.u and self.r !=3:
+            self.mysound=SoundLoader.load(f"{self.sound_list[self.u]}.mp3")
+            self.mysound.play()
+           
+        
     def build(self):
-        self.sound = None
-        self.recorder = None
-        self.progress_event = None
-        return Builder.load_string(KV)
-
-    def request_permission_and_record(self):
-        """طلب إذن أولاً ثم البدء بعد ثانيتين لتفادي الكراش"""
-        if platform == 'android':
-            from android.permissions import request_permissions, Permission
-            request_permissions([
-                Permission.RECORD_AUDIO,
-                Permission.WRITE_EXTERNAL_STORAGE,
-                Permission.READ_EXTERNAL_STORAGE
-            ])
-            self.root.ids.status.text = "⏳ Waiting for permission..."
-            Clock.schedule_once(lambda dt: self.start_recording(), 2)
-        else:
-            self.root.ids.status.text = "⚠️ Works only on Android"
-
-    def start_recording(self):
-        try:
-            MediaRecorder = autoclass('android.media.MediaRecorder')
-            AudioSource = autoclass('android.media.MediaRecorder$AudioSource')
-            OutputFormat = autoclass('android.media.MediaRecorder$OutputFormat')
-            AudioEncoder = autoclass('android.media.MediaRecorder$AudioEncoder')
-
-            self.recorder = MediaRecorder()
-            self.recorder.setAudioSource(AudioSource.MIC)
-            self.recorder.setOutputFormat(OutputFormat.THREE_GPP)
-            self.recorder.setAudioEncoder(AudioEncoder.AMR_NB)
-            self.output_file = '/sdcard/recorded_audio.3gp'
-            self.recorder.setOutputFile(self.output_file)
-            self.recorder.prepare()
-            self.recorder.start()
-
-            self.root.ids.status.text = "🎤 Recording..."
-        except Exception as e:
-            self.root.ids.status.text = f"⚠️ Error starting: {e}"
-
-    def stop_recording(self):
-        try:
-            if self.recorder:
-                self.recorder.stop()
-                self.recorder.release()
-                self.root.ids.status.text = f"✅ Saved: {self.output_file}"
-            else:
-                self.root.ids.status.text = "⚠️ No active recorder."
-        except Exception as e:
-            self.root.ids.status.text = f"⚠️ Error stopping: {e}"
-
-    def play_recording(self):
-        try:
-            sound = SoundLoader.load(self.output_file)
-            if sound:
-                sound.play()
-                self.root.ids.status.text = "🎧 Playing recording..."
-                self.start_progress_bar(sound.length)
-            else:
-                self.root.ids.status.text = "⚠️ No recording found."
-        except Exception as e:
-            self.root.ids.status.text = f"⚠️ Error playing: {e}"
-
-    def start_progress_bar(self, duration):
-        bar = self.root.ids.progress
-        bar.opacity = 1
-        bar.value = 0
-        self.progress_time = 0
-
-        if self.progress_event:
-            self.progress_event.cancel()
-
-        self.progress_event = Clock.schedule_interval(lambda dt: self.update_progress(dt, duration), 0.1)
-
-    def update_progress(self, dt, duration):
-        bar = self.root.ids.progress
-        self.progress_time += dt
-        bar.value = (self.progress_time / duration) * 100
-        if self.progress_time >= duration:
-            bar.opacity = 0
-            bar.value = 0
-            self.root.ids.status.text = "✅ Playback finished"
-            self.progress_event.cancel()
-            return False
-        return True
-
-AndroidRecorderApp().run()
+        self.Letter_list=["أ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","ه","و","ى"]
+        
+        self.sound_list=["Alef","Beh","Teh","Theh","Geem","hah","Qh","Dal","Zal","Reh","Zen","Seen","Sheen","Sad","Dad","Tah","Zaah","3en","Gen","Feah","Gaf","Kaf","Lam","Mem","Non","Heah","Waw","Yeh"]
+        self.lay=Widget()
+        self.n=0
+        self.sx=0
+        self.u=0
+        self.r=0
+        self.st=0
+       
+        
+        
+        
+        self.lab=Label(text=self.Letter_list[self.n],font_name="arial-1.ttf",font_size=150,pos=(300,750),color=(0,0,0,1))
+        
+        self.but=Button(text="go",size_hint=(None,None),size=(150,70),pos=(300,200),on_press=self.next)
+        
+        
+        
+        
+        self.mysoundc=SoundLoader.load(f"Question about the letter Alif.mp3")
+        
+        
+        
+      
+        
+        
+        self.mysound1=SoundLoader.load("Alef.mp3")
+        self.mysound1.play()
+        
+        self.mysound2=SoundLoader.load("Beh.mp3")
+        
+        self.mysound3=SoundLoader.load("Teh.mp3")
+        
+        self.mysound4=SoundLoader.load("Theh.mp3")
+        
+        self.mysound5=SoundLoader.load("Geem.mp3")
+        
+        self.mysound6=SoundLoader.load("hah.mp3")
+        
+        self.mysound7=SoundLoader.load("Qh.mp3")
+        
+        self.mysound8=SoundLoader.load("Dal.mp3")
+        
+        self.mysound9=SoundLoader.load("Zal.mp3")
+        
+        self.mysound10=SoundLoader.load("Reh.mp3")
+        
+        self.mysound11=SoundLoader.load("Zen.mp3")
+        
+        self.mysound12=SoundLoader.load("Seen.mp3")
+        
+        self.mysound13=SoundLoader.load("Sheen.mp3")
+        
+        self.mysound13=SoundLoader.load("Sad.mp3")
+        
+        self.mysound14=SoundLoader.load("Dad.mp3")
+        
+        self.mysound15=SoundLoader.load("Tah.mp3")
+        
+        self.mysound16=SoundLoader.load("Zaah.mp3")
+        
+        self.mysound18=SoundLoader.load("3en.mp3")
+        
+        self.mysound19=SoundLoader.load("Gen.mp3")
+        
+        self.mysound20=SoundLoader.load("Feah.mp3")
+        
+        self.mysound21=SoundLoader.load("Gaf.mp3")
+        
+        self.mysound22=SoundLoader.load("Kaf.mp3")
+        
+        self.mysound23=SoundLoader.load("Lam.mp3")
+        
+        self.mysound24=SoundLoader.load("Mem.mp3")
+        
+        self.mysound25=SoundLoader.load("Non.mp3")
+        
+        self.mysound26=SoundLoader.load("Heah.mp3")
+        
+        self.mysound27=SoundLoader.load("Waw.mp3")
+        
+        self.mysound28=SoundLoader.load("Yeh.mp3")
+        
+        
+        self.lay.add_widget(self.lab)
+        self.lay.add_widget(self.but)
+        return self.lay
+        
+        
+        
+if __name__=="__main__":
+    Myar().run()
