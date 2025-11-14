@@ -1,15 +1,48 @@
-[buildozer]
-
 [app]
-title = الحروف
-package.name = الحروف
-package.domain = org.test
-source.dir = .
-source.include_exts = py, kv, 3gp
-version = 1.0
 
-requirements = python3,kivy,android
-android.permissions = RECORD_AUDIO, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
+# (اسم التطبيق الذي يظهر للمستخدم)
+title = 😀الحروف😀
+
+# (اسم الحزمة، اختَر اسمًا فريدًا على شكل reverse domain)
+package.name = mykivyapp
+package.domain = org.example
+
+# الإصدار
+version = 0.1
+
+# ملف/مجلد المصدر (بشكل عام: كل الملفات في المجلد الحالي)
+source.dir = .
+
+# ملفات وسائط تُدرج في الحزمة
+source.include_exts = py,kv,png,jpg,txt,ico,xml
+
+# أيقونة التطبيق (ضع ملف icon.png في جذر المشروع)
+icon.filename = icon.png
+
+# صورة شاشة البداية / presplash (ضع presplash.png في جذر المشروع)
+presplash.filename = presplash.png
+
+# توجيه الشاشة
+orientation = portrait
+
+# متطلبات بايثون/مكتبات (أضف ما تحتاجه)
+requirements = python3,kivy
+
+# صلاحيات أندرويد (أزل أو أضف حسب حاجتك)
+android.permissions = INTERNET
+
+# إعدادات Android (لا تغير إن لم تكن متأكدًا)
 android.api = 33
 android.minapi = 21
-orientation = portrait
+android.arch = armeabi-v7a, arm64-v8a
+
+# تحسينات الحزمة
+fullscreen = 0
+presplash_color = #000000
+
+[buildozer]
+# مسار لتثبيت SDK/NDK (اتركها فارغة لاستخدام الافتراضي)
+# android.sdk_path = /path/to/android/sdk
+
+# تنظيف بناء سابق عند الحاجة
+clean_on_rebuild = 1
