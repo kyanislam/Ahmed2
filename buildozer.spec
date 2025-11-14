@@ -14,7 +14,7 @@ version = 0.1
 source.dir = .
 
 # ملفات وسائط تُدرج في الحزمة
-source.include_exts = py,kv,png,jpg,txt,ico,xml
+source.include_exts = py,kv,png,jpg,txt,ico,xml,mp3,ttf
 
 # أيقونة التطبيق (ضع ملف icon.png في جذر المشروع)
 icon.filename = icon.png
