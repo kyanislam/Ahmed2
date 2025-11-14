@@ -1,8 +1,8 @@
 [buildozer]
 
 [app]
-title = AndroidRecorder
-package.name = androidrecorder
+title = الحروف
+package.name = الحروف
 package.domain = org.test
 source.dir = .
 source.include_exts = py, kv, 3gp
